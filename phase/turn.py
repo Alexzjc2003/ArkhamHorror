@@ -1,15 +1,25 @@
-from event.event import InvestigatorTurnEndEvent, InvestigatorTurnStartEvent
+from __future__ import annotations
+
+from event.event import InvestigatorTurnEndEvent, InvestigatorTurnStartEvent, PlayerWindowEvent
 from game import Game
 from investigator import Investigator
+from player_window import PlayerWindow
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+  from .investigation_phase import InvestigationPhase
+
 
 class Turn():
+  phase:InvestigationPhase
   investigator:Investigator
 
   shouldEnd:bool
-
   
-  def __init__(self, investigator: Investigator):
+  def __init__(self, phase:InvestigationPhase, investigator: Investigator):
+    self.phase = phase
     self.investigator = investigator
+    
     self.shouldEnd = False
 
     # 2.2 turn start
@@ -17,6 +27,8 @@ class Turn():
 
     while not self.shouldEnd:
       # TODO: Player Window
+
+      Game.triggerEvent(PlayerWindowEvent("2.2 - 2.2.1", PlayerWindow(phase=self.phase, turn=self)))
       ...
       # 2.2.1 take possible actions
       investigator.hello()

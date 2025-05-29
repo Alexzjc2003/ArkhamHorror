@@ -1,8 +1,13 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+
+
 if TYPE_CHECKING:
   from investigator import Investigator
+  from phase.mythos_phase import MythosPhase
+  from phase.round import Round
+  from player_window import PlayerWindow
   from phase import InvestigationPhase, Turn
 
 from .event_type import EventType
@@ -46,3 +51,39 @@ class InvestigatorTurnEndEvent(Event):
     super().__init__(name, EventType.InvestigatorTurnEnd)
     self.turn = turn
     self.investigator = turn.investigator
+
+class PlayerWindowEvent(Event):
+  window: PlayerWindow
+  def __init__(self, name:str, window:PlayerWindow):
+    super().__init__(name, EventType.PlayerWindow)
+    self.window = window
+
+
+class RoundStartEvent(Event):
+  round:Round
+  def __init__(self, name:str, round:Round):
+    super().__init__(name, EventType.RoundStart)
+    self.round = round
+
+
+class MythosPhaseStartEvent(Event):
+  phase: MythosPhase
+  def __init__(self, name:str, phase:MythosPhase):
+    super().__init__(name, EventType.MythosPhaseStart)
+    self.phase = phase
+
+
+class MythosPhaseEndEvent(Event):
+  phase:MythosPhase
+  def __init__(self, name:str, phase:MythosPhase):
+    super().__init__(name, EventType.MythosPhaseEnd)
+    self.phase = phase
+
+  
+class PlayerWouldDrawEvent(Event):
+  # TODO
+  ...
+
+class DoomPlacedOnAgendaEvent(Event):
+  # TODO
+  ...
