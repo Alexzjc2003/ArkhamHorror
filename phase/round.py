@@ -4,13 +4,13 @@ from .mythos_phase import MythosPhase
 
 
 class Round:
-  num:int
+    num: int
 
-  def __init__(self, num:int):
-    self.num = num
+    def __init__(self, num: int):
+        self.num = num
 
-    if num != 1:
-      MythosPhase(self)
+        if num != 1:
+            MythosPhase(self)
 
-    InvestigationPhase(self, Game.getInvestigators())
-    ...
+        InvestigationPhase(self, Game.getInvestigators())
+        ...
