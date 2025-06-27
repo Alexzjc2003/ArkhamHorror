@@ -1,17 +1,17 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Self
+from abc import ABC, abstractmethod
+
+from event.event_type import EventType
+from listener.event_listener import EventListener, Handle
+
 
 if TYPE_CHECKING:
-    from deck import Deck
-
-
-class AbilityType(Enum):
-    Constant = "Constant"
-    Forced = "Forced"
-    Relevation = "Relevation"
-    Triggered = "Triggered"
+    from encounter import EncounterDeck
+    from investigator import Investigator
+    from player import Player
 
 
 class Token:
@@ -43,22 +43,29 @@ class Token:
         self.horror = 0
 
 
+class CardType(Enum):
+    Investigator = "Investigator"
+    Enemy = "Enemy"
+    Agenda = "Agenda"
+    Treachery = "Treachery"
+
+
 class Card:
     name: str
+    owner: Player | EncounterDeck | None
+    type: CardType
     token: Token
-    deck: Deck | None
 
     def __init__(
-        self, name: str = "", token: Token = Token(), deck: Deck | None = None
+        self,
+        name: str,
+        owner: Player | EncounterDeck | None = None,
+        token: Token = Token(),
     ):
         self.name = name
+        self.owner = owner
         self.token = token
-        self.deck = deck
 
-
-def Ability(type: AbilityType):
-    def decorator(func):
-        func._ability_type = type
-        return func
-
-    return decorator
+    def setOwner(self, owner: Player | EncounterDeck) -> Self:
+        self.owner = owner
+        return self

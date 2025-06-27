@@ -2,15 +2,16 @@ from collections import defaultdict
 import inspect
 
 from agenda import Agenda, AgendaCard
-from deck import EncounterDeck
+from encounter import EncounterDeck
 from event import Event, EventType
+from event.event_bus import EventBus
 from investigator import Investigator
 from listener import EventListener
 
 
 class Game:
 
-    _handlers: dict[EventType, list] = defaultdict(list)
+    _event_bus: EventBus = EventBus()
     _investigators: list[Investigator] = []
 
     _agenda: Agenda
@@ -19,14 +20,15 @@ class Game:
 
     @classmethod
     def triggerEvent(cls, event: Event):
-        for func in cls._handlers[event.type]:
-            func(event)
+        cls._event_bus.trigger(event)
 
     @classmethod
     def registerListener(cls, listener: EventListener):
-        for name, method in inspect.getmembers(listener, inspect.ismethod):
-            if hasattr(method, "_event_type"):
-                cls._handlers[getattr(method, "_event_type")].append(method)
+        cls._event_bus.register(listener)
+
+    @classmethod
+    def unregisterListener(cls, listener: EventListener):
+        cls._event_bus.unregister(listener)
 
     @classmethod
     def addInvestigator(cls, investigator: Investigator):

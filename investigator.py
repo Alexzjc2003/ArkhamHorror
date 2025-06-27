@@ -1,9 +1,36 @@
-class Investigator:
-    name: str
+from __future__ import annotations
 
-    def __init__(self, name):
+from typing import TYPE_CHECKING
+
+from card import Card, CardType
+from element import Damageable, Entity
+
+if TYPE_CHECKING:
+    from location import Location
+    from player import Player
+
+
+class InvestigatorCard(Card):
+    owner: Player
+    health: int
+    sanity: int
+
+    def __init__(self, name: str, health: int, sanity: int, owner: Player):
+        super().__init__(name, owner)
+        self.health = health
+        self.sanity = sanity
+        self.type = CardType.Investigator
+
+
+class Investigator(Damageable, Entity):
+    card: InvestigatorCard
+    name: str
+    location: Location
+
+    def __init__(self, name: str, card: InvestigatorCard):
+        Damageable.__init__(self, card.token, card.health, card.sanity)
         self.name = name
-        pass
+        self.card = card
 
     def hello(self):
         print(f"Hello, I am {self.name}.")

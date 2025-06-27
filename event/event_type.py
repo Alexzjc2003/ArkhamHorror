@@ -8,14 +8,27 @@ class EventType(Enum):
     RoundStart = "RoundStart"
 
     MythosPhaseStart = "MythosPhaseStart"
-    MythosPhaseEnd = "MythosPhaseEnd"
     WouldPlaceDoom = "WouldPlaceDoom"
     AlreadyPlaceDoom = "AlreadyPlaceDoom"
+    MythosPhaseEnd = "MythosPhaseEnd"
+
+    InvestigationPhaseStart = "InvestigationPhaseStart"
+    InvestigatorTurnStart = "InvestigatorTurnStart"
+    InvestigatorTurnEnd = "InvestigatorTurnEnd"
+    InvestigationPhaseEnd = "InvestigationPhaseEnd"
+
+    RoundEnd = "RoundEnd"
+
     PlayerWouldDraw = "PlayerWouldDraw"
     PlayerAlreadyDraw = "PlayerAlreadyDraw"
 
-    InvestigationPhaseStart = "InvestigationPhaseStart"
-    InvestigationPhaseEnd = "InvestigationPhaseEnd"
+    WouldDealDamageHorror = "WouldDealDamageHorror"
+    AlreadyDealDamageHorror = "AlreadyDealDamageHorror"
 
-    InvestigatorTurnStart = "InvestigatorTurnStart"
-    InvestigatorTurnEnd = "InvestigatorTurnEnd"
+    WouldDiscoverClue = "WouldDiscoverClue"
+    AlreadyDiscoverClue = "AlreadyDiscoverClue"
+
+    WouldGetInPlay = "WouldGetInPlay"
+    AlreadyGetInPlay = "AlreadyGetInPlay"
+    WouldGetOutOfPlay = "WouldGetOutOfPlay"
+    AlreadyGetOutOfPlay = "AlreadyGetOutOfPlay"

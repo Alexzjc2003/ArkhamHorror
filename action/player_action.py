@@ -57,24 +57,24 @@ class DrawAction(PlayerAction):
     investigator: Investigator
     deck: Deck
     card: list[Card] | None
-    count: int
+    amount: int
 
     def __init__(
         self,
         investigator: Investigator,
         deck: Deck,
         cost: ActionCost = ActionCost(),
-        count: int = 1,
+        amount: int = 1,
     ):
         super().__init__(type=ActionType.Draw, cost=cost)
 
         self.investigator = investigator
         self.deck = deck
         self.card = None
-        self.count = count
+        self.amount = amount
 
         wouldDraw = PlayerWouldDrawEvent(
-            "would draw", self.investigator, self.deck, self.count
+            "would draw", self.investigator, self.deck, self.amount
         )
         Game.triggerEvent(wouldDraw)
 
@@ -84,9 +84,9 @@ class DrawAction(PlayerAction):
         # draw card
         self.investigator = wouldDraw.investigator
         self.deck = wouldDraw.deck
-        self.count = wouldDraw.count
+        self.amount = wouldDraw.amount
 
-        self.card = [self.deck.drawFromTop() for _ in range(self.count)]
+        self.card = [self.deck.drawFromTop() for _ in range(self.amount)]
 
         Game.triggerEvent(
             PlayerAlreadyDrawEvent(

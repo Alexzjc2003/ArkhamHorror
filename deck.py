@@ -1,27 +1,28 @@
 from __future__ import annotations
 
-from typing import Generic, Self, TypeVar
+from typing import Self, Generic, TypeVar
 
 
 import random
+from area import AreaOutOfPlay
 from card import Card
 
 
 class EmptyDeckException(Exception):
     def __init__(self, deck: Deck):
-        super().__init__()
+        super().__init__(f"{deck}")
 
 
 TCard = TypeVar("TCard", bound=Card)
 
 
-class Deck(Generic[TCard]):
+class Deck(Generic[TCard], AreaOutOfPlay):
     cards: list[TCard]
-    discardPile: DiscardPile[TCard]
+    discardPile: DiscardPile
 
-    def __init__(self):
-        self.cards = []
-        self.discardPile = DiscardPile[TCard]()
+    def __init__(self, discardPile: DiscardPile):
+        AreaOutOfPlay.__init__(self)
+        self.discardPile = discardPile
 
     def putOnTop(self, card: TCard) -> Self:
         self.cards.insert(0, card)
@@ -70,24 +71,8 @@ class Deck(Generic[TCard]):
         return card
 
 
-class DiscardPile(Generic[TCard]):
+class DiscardPile(Generic[TCard], AreaOutOfPlay):
     cards: list[TCard]
 
     def __init__(self):
-        self.cards = []
-
-
-class EncounterDeck(Deck):
-
-    def __init__(self):
-        super().__init__()
-
-    def drawFromTop(self) -> Card:
-        if len(self.cards) == 0:
-            self.reset()
-        return super().drawFromTop()
-
-    def drawFromBottom(self) -> Card:
-        if len(self.cards) == 0:
-            self.reset()
-        return super().drawFromBottom()
+        AreaOutOfPlay.__init__(self)

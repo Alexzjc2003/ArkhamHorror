@@ -1,0 +1,22 @@
+area:
+  game area
+  threat area
+  play area
+  out-of-play area
+
+in play:
+  card in inv's play area, 
+  current act, agenda, 
+  location in play area, 
+  encounter in inv's threat area, encounter at location
+
+out of play:
+  hand, deck, discard pile,
+  victory display,
+  set aside/removed
+
+  
+
+Triggered ability:
+  a get in play listener in decorator, registered when built.
+  when in play, a trigger listener and a limit listener is registered
