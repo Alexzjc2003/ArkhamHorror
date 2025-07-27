@@ -2,16 +2,28 @@ from __future__ import annotations
 
 from enum import Enum
 from typing import TYPE_CHECKING, Self
-from abc import ABC, abstractmethod
-
-from event.event_type import EventType
-from listener.event_listener import EventListener, Handle
 
 
 if TYPE_CHECKING:
     from encounter import EncounterDeck
-    from investigator import Investigator
     from player import Player
+
+
+class Slot(Enum):
+    Accessory = 0
+    Body = 1
+    Ally = 2
+    Hand = 3
+    Arcane = 4
+    Tarrot = 5
+
+
+class Icon(Enum):
+    Willpower = 0
+    Intellect = 1
+    Combat = 2
+    Agility = 3
+    Wild = 4
 
 
 class Token:
@@ -44,9 +56,10 @@ class Token:
 
 
 class CardType(Enum):
-    Investigator = "Investigator"
-    Enemy = "Enemy"
     Agenda = "Agenda"
+    Asset = "Asset"
+    Enemy = "Enemy"
+    Investigator = "Investigator"
     Treachery = "Treachery"
 
 
@@ -55,6 +68,7 @@ class Card:
     owner: Player | EncounterDeck | None
     type: CardType
     token: Token
+    traits: list[str]
 
     def __init__(
         self,
@@ -65,6 +79,7 @@ class Card:
         self.name = name
         self.owner = owner
         self.token = token
+        self.traits = []
 
     def setOwner(self, owner: Player | EncounterDeck) -> Self:
         self.owner = owner

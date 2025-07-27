@@ -4,6 +4,7 @@ from enum import Enum
 class EventType(Enum):
 
     PlayerWindow = "PlayerWindow"
+    PlayerAction = "PlayerAction"
 
     RoundStart = "RoundStart"
 
@@ -32,3 +33,10 @@ class EventType(Enum):
     AlreadyGetInPlay = "AlreadyGetInPlay"
     WouldGetOutOfPlay = "WouldGetOutOfPlay"
     AlreadyGetOutOfPlay = "AlreadyGetOutOfPlay"
+
+    WouldRevealChaosToken = "WouldRevealChaosToken"
+    AlreadyRevealChaosToken = "AlreadyRevealChaosToken"
+
+    CalcModifier = "CalcModifier"
+
+    SelectTarget = "SelectTarget"

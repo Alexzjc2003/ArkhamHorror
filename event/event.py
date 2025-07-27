@@ -2,22 +2,24 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Tuple
 
-from area import AreaInPlay, AreaOutOfPlay
+from card import Icon
+
+from .event_type import EventType
 
 
 if TYPE_CHECKING:
+    from area import AreaInPlay, AreaOutOfPlay
     from card import Card
+    from chaos.chaos_token import ChaosToken
     from deck import Deck
     from element import Damageable
-    from enemy import Enemy
     from investigator import Investigator
+    from location import Location
+    from phase import InvestigationPhase, Turn
     from phase import InvestigationPhase, Turn
     from phase.mythos_phase import MythosPhase
     from phase.round import Round
     from player_window import PlayerWindow
-    from location import Location
-
-from .event_type import EventType
 
 
 class Event:
@@ -82,6 +84,16 @@ class PlayerWindowEvent(Event):
     def __init__(self, name: str, window: PlayerWindow):
         super().__init__(name, EventType.PlayerWindow)
         self.window = window
+
+
+class PlayerActionEvent(Event):
+    investigator: Investigator
+    turn: Turn
+
+    def __init__(self, name: str, investigator: Investigator, turn: Turn):
+        super().__init__(name, EventType.PlayerAction)
+        self.investigator = investigator
+        self.turn = turn
 
 
 class RoundStartEvent(Event):
@@ -281,3 +293,31 @@ class AlreadyGetOutOfPlayEvent(Event):
         self.card = card
         self.dst = dst
         self.src = src
+
+
+class WouldRevealChaosTokenEvent(Event):
+    amount: int
+
+    def __init__(self, name: str, amount: int):
+        super().__init__(name, EventType.WouldRevealChaosToken)
+        self.amount = amount
+
+
+class AlreadyRevealChaosTokenEvent(Event):
+    token: list[ChaosToken]
+
+    def __init__(self, name: str, token: list[ChaosToken]):
+        super().__init__(name, EventType.AlreadyRevealChaosToken)
+        self.token = token
+
+
+class CalcModifierEvent(Event):
+    skill: Icon
+    modifier: int
+    isSkillTest: bool
+
+    def __init__(self, name: str, skill: Icon, isSkillTest: bool):
+        super().__init__(name, EventType.CalcModifier)
+        self.skill = skill
+        self.isSkillTest = isSkillTest
+        self.modifier = 0

@@ -6,6 +6,7 @@ from card import Card, CardType
 from element import Damageable, Entity
 
 if TYPE_CHECKING:
+    from card import Icon
     from location import Location
     from player import Player
 
@@ -14,12 +15,16 @@ class InvestigatorCard(Card):
     owner: Player
     health: int
     sanity: int
+    skill: list[int]
 
-    def __init__(self, name: str, health: int, sanity: int, owner: Player):
+    def __init__(
+        self, name: str, health: int, sanity: int, skill: list[int], owner: Player
+    ):
         super().__init__(name, owner)
         self.health = health
         self.sanity = sanity
         self.type = CardType.Investigator
+        self.skill = skill
 
 
 class Investigator(Damageable, Entity):

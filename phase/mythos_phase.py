@@ -19,7 +19,9 @@ if TYPE_CHECKING:
 
 class MythosPhase(Phase):
     def __init__(self, round: Round):
+        super().__init__(round)
 
+    def __call__(self):
         # 1.1 Mythos phase start
         Game.triggerEvent(MythosPhaseStartEvent("myt phase start", self))
 

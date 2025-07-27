@@ -1,14 +1,15 @@
+from __future__ import annotations
+from agenda import Agenda, AgendaCard
+from chaos.chaos_bag import ChaosBag
 from chaos.chaos_token import ChaosTokenNum, ChaosTokenSym, ChaosTokenType
+from event.select_target import SelectTargetEvent
 from game import Game
-from listener.card_listener import CardListener
-from listener.dumb_listener import DumbListener
 from investigator import Investigator
+from listener.target_selector import TargetSelector
+from pack.core.encounter import AncientEvils
+from pack.core.investigator import RolandBanks
 from phase.round import Round
 from player import Player
-from pack.core.encounter import *
-from pack.core.investigator import RolandBanks
-
-from agenda import Agenda, AgendaCard
 
 
 class AgendaCard1(AgendaCard):
@@ -17,38 +18,27 @@ class AgendaCard1(AgendaCard):
         super().__init__("AgendaCard1", 3)
 
     def flip(self):
-        print("Agenda1 flipped")
+        ev = SelectTargetEvent(
+            "Agenda1 select",
+            {"option1": "info1", "option2": None, "option3": "info3"},
+            amount=1,
+            prompt="Agenda1 flipped",
+        )
+        Game.triggerEvent(ev)
 
-
-class AgendaCard2(AgendaCard):
-    def __init__(self):
-        super().__init__("AgendaCard2", 4)
-
-    def flip(self):
-        print("Agenda2 flipped")
-
-
-class AgendaCard3(AgendaCard):
-    def __init__(self):
-        super().__init__("AgendaCard3", 5)
-
-    def flip(self):
-        print("Agenda3 flipped")
+        print(ev.target)
 
 
 class SimpleAgenda(Agenda):
     def __init__(self):
         super().__init__()
         self.deck.putOnBottom(AgendaCard1().setOwner(Game._encounter_deck))
-        self.deck.putOnBottom(AgendaCard2().setOwner(Game._encounter_deck))
-        self.deck.putOnBottom(AgendaCard3().setOwner(Game._encounter_deck))
 
 
 if __name__ == "__main__":
 
     # pre-game setup
-    Game.registerListener(DumbListener())
-    Game.registerListener(CardListener())
+    Game.registerListener(TargetSelector())
 
     # game setup
     p1 = Player()
@@ -68,6 +58,8 @@ if __name__ == "__main__":
     # 6. Assemble the chaos bag
     #    +1, 0, -1, -1, -2, -2, -3, -4,
     #    sku, cul, elt, tab, els, auf
+    Game._chaos_bag = ChaosBag()
+
     Game._chaos_bag.add(ChaosTokenNum(+1))
     Game._chaos_bag.add(ChaosTokenNum(0))
     Game._chaos_bag.add(ChaosTokenNum(-1))
@@ -104,3 +96,5 @@ if __name__ == "__main__":
         Game._round = Round(i + 1)
         Game._round()
         ...
+
+    pass

@@ -4,18 +4,21 @@ from event.event import PlayerWindowEvent
 from game import Game
 
 from typing import TYPE_CHECKING
+
+
 if TYPE_CHECKING:
-  from phase import Phase, Turn
+    from phase import Phase
+    from phase.investigation_phase import InvestigationPhase
+
 
 class PlayerWindow:
-  phase: Phase
-  turn: Turn | None
+    phase: Phase
+    # turn: Turn | None
 
-  def __init__(self, phase:Phase, turn:Turn | None=None):
+    def __init__(self, phase: Phase):
 
-    self.phase = phase
-    self.turn  = turn
+        self.phase = phase
 
-    Game.triggerEvent((PlayerWindowEvent("player window", self)))
-    
-    ...
+        Game.triggerEvent((PlayerWindowEvent("player window", self)))
+
+        ...
