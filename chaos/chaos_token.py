@@ -36,6 +36,9 @@ class ChaosToken(ABC):
     @abstractmethod
     def __eq__(self, value: object) -> bool: ...
 
+    @abstractmethod
+    def __repr__(self) -> str: ...
+
 
 class ChaosTokenNum(ChaosToken):
     _value: int
@@ -57,6 +60,13 @@ class ChaosTokenNum(ChaosToken):
             or isinstance(value, int)
             and value == self._value
         )
+
+    def __repr__(self) -> str:
+        s = f"{self.modifier}" if self.modifier < 0 else f"+{self.modifier}"
+        return f"ChaosTokenNum({s})"
+
+    def __str__(self) -> str:
+        return self.__repr__()
 
 
 class ChaosTokenSym(ChaosToken):
@@ -81,3 +91,10 @@ class ChaosTokenSym(ChaosToken):
             or isinstance(value, ChaosTokenType)
             and value == self.type
         )
+
+    def __repr__(self) -> str:
+        s = f"{self.modifier}" if self.modifier < 0 else f"+{self.modifier}"
+        return f"ChaosTokenSym[{self.type.name}]({s})"
+
+    def __str__(self) -> str:
+        return self.__repr__()

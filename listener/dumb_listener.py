@@ -1,6 +1,7 @@
 from .event_listener import EventListener, Handle
 from event import EventType
 from event.event import (
+    AlreadyRevealChaosTokenEvent,
     InvestigationPhaseEndEvent,
     InvestigationPhaseStartEvent,
     InvestigatorTurnEndEvent,
@@ -8,6 +9,7 @@ from event.event import (
     MythosPhaseEndEvent,
     MythosPhaseStartEvent,
     PlayerAlreadyDrawEvent,
+    RoundStartEvent,
 )
 
 
@@ -39,3 +41,11 @@ class DumbListener(EventListener):
     @Handle(EventType.MythosPhaseEnd)
     def onMythosPhaseEnd(self, event: MythosPhaseEndEvent):
         print("Mythos phase ends.")
+
+    @Handle(EventType.RoundStart)
+    def onRoundStart(self, event: RoundStartEvent):
+        print(f"Round {event.round.num} starts.")
+
+    @Handle(EventType.AlreadyRevealChaosToken)
+    def onRevealChaosToken(self, event: AlreadyRevealChaosTokenEvent):
+        print(f"{event.investigator.name} reveals {str(event.token)}")

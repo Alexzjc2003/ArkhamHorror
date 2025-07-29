@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from card import Card, CardType
+from card import Card, CardType, Icon
 from element import Damageable, Entity
+from skill_test import SkillTest
 
 if TYPE_CHECKING:
-    from card import Icon
     from location import Location
     from player import Player
 
@@ -38,4 +38,7 @@ class Investigator(Damageable, Entity):
         self.card = card
 
     def hello(self):
+        st = SkillTest(self, Icon.Combat, 3)
+        st(lambda: print(f"{st.isSuccess}"))
+
         print(f"Hello, I am {self.name}.")

@@ -20,7 +20,7 @@ class AgendaCard(Card):
         super().__init__(name)
         self.doomThreshold = threshold
 
-    def flip(self): ...
+    def flip(self) -> None | AgendaCard: ...
     def setOwner(self, owner: EncounterDeck) -> Self:
         return super().setOwner(owner)
 
@@ -40,7 +40,10 @@ class Agenda:
         # remove each token on card
         self.deck.getTop().token.clear()
         # flip current agenda
-        self.deck.getTop().flip()
+        agendaCard = self.deck.getTop().flip()
 
         # remove the current agenda
         self.deck.drawFromTop()
+
+        if agendaCard is not None:
+            self.deck.putOnTop(agendaCard)

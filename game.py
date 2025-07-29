@@ -6,19 +6,19 @@ from agenda import Agenda, AgendaCard
 from encounter import EncounterDeck
 from event import Event
 from event.event_bus import EventBus
-from investigator import Investigator
 from listener import EventListener
 from scenario import Scenario
 
 if TYPE_CHECKING:
     from chaos.chaos_bag import ChaosBag
+    from investigator import Investigator
     from phase.round import Round
 
 
 class Game:
     _round: Round
     _chaos_bag: ChaosBag
-    _scenario: Scenario = Scenario()
+    _scenario: Scenario
 
     _event_bus: EventBus = EventBus()
     _investigators: list[Investigator] = []

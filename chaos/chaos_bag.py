@@ -11,6 +11,9 @@ from game import Game
 
 from .chaos_token import ChaosToken, ChaosTokenType
 
+if TYPE_CHECKING:
+    from investigator import Investigator
+
 
 class ChaosBag:
     token: list[ChaosToken]
@@ -25,9 +28,9 @@ class ChaosBag:
     def remove(self, token: int | ChaosTokenType):
         self.token.remove(token)  # type: ignore
 
-    def reveal(self, amount: int) -> list[ChaosToken]:
+    def reveal(self, investigator: Investigator, amount: int) -> list[ChaosToken]:
         wouldRevealChaosToken = WouldRevealChaosTokenEvent(
-            "would reveal chaos token", amount
+            "would reveal chaos token", investigator, amount
         )
         Game.triggerEvent(wouldRevealChaosToken)
 
@@ -43,7 +46,9 @@ class ChaosBag:
         token = random.sample(self.token, amount)
 
         Game.triggerEvent(
-            AlreadyRevealChaosTokenEvent("already reveal chaos token", token)
+            AlreadyRevealChaosTokenEvent(
+                "already reveal chaos token", investigator, token
+            )
         )
 
         return token

@@ -24,7 +24,8 @@ class TargetSelector(EventListener):
                     print(f"  {info}")
                 opts.append(opt)
 
-            idx = input("Type the index: ")
+            idx = int(input("Type the index: "))
+            event.target = opts[idx]
             pass
         if amount == -1:
             pass

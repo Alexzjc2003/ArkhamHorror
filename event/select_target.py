@@ -13,7 +13,7 @@ class SelectTargetEvent(Event, Generic[TResult]):
     amount: int
     prompt: str | None
 
-    target: TResult | list[TResult]
+    target: TResult | list[TResult] | None
 
     def __init__(
         self,
@@ -26,3 +26,6 @@ class SelectTargetEvent(Event, Generic[TResult]):
 
         self.options = options
         self.amount = amount
+        self.prompt = prompt
+
+        self.target = None

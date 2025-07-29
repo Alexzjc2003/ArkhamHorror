@@ -5,11 +5,14 @@ from chaos.chaos_token import ChaosTokenNum, ChaosTokenSym, ChaosTokenType
 from event.select_target import SelectTargetEvent
 from game import Game
 from investigator import Investigator
+from listener.card_listener import CardListener
+from listener.dumb_listener import DumbListener
 from listener.target_selector import TargetSelector
 from pack.core.encounter import AncientEvils
 from pack.core.investigator import RolandBanks
 from phase.round import Round
 from player import Player
+from scenario import Scenario, ScenarioRef
 
 
 class AgendaCard1(AgendaCard):
@@ -17,7 +20,7 @@ class AgendaCard1(AgendaCard):
     def __init__(self):
         super().__init__("AgendaCard1", 3)
 
-    def flip(self):
+    def flip(self) -> AgendaCard:
         ev = SelectTargetEvent(
             "Agenda1 select",
             {"option1": "info1", "option2": None, "option3": "info3"},
@@ -27,6 +30,7 @@ class AgendaCard1(AgendaCard):
         Game.triggerEvent(ev)
 
         print(ev.target)
+        return AgendaCard1()
 
 
 class SimpleAgenda(Agenda):
@@ -39,6 +43,8 @@ if __name__ == "__main__":
 
     # pre-game setup
     Game.registerListener(TargetSelector())
+    Game.registerListener(CardListener())
+    Game.registerListener(DumbListener())
 
     # game setup
     p1 = Player()
@@ -73,8 +79,8 @@ if __name__ == "__main__":
     Game._chaos_bag.add(ChaosTokenSym(ChaosTokenType.Cultist))
     Game._chaos_bag.add(ChaosTokenSym(ChaosTokenType.ElderThing))
     Game._chaos_bag.add(ChaosTokenSym(ChaosTokenType.Tablet))
-    Game._chaos_bag.add(ChaosTokenSym(ChaosTokenType.ElderSign))
-    Game._chaos_bag.add(ChaosTokenSym(ChaosTokenType.AutoFail))
+    # Game._chaos_bag.add(ChaosTokenSym(ChaosTokenType.ElderSign))
+    # Game._chaos_bag.add(ChaosTokenSym(ChaosTokenType.AutoFail))
 
     # 7. Collect starting resources
     p1.investigator.token.resource = 5
@@ -83,6 +89,8 @@ if __name__ == "__main__":
 
     # 9 & 10. Scenario introduction & setup
 
+    Game._scenario = Scenario(ScenarioRef({}, {}))
+
     # 11. Set agenda deck
     Game.useAgenda(SimpleAgenda())
     Game._encounter_deck.add(AncientEvils().setOwner(Game._encounter_deck))
@@ -90,9 +98,22 @@ if __name__ == "__main__":
     # 12. Set act deck
 
     # 13. Scenario reference
+    Game._scenario.reference.modifier = {
+        ChaosTokenType.Skull: 0,
+        ChaosTokenType.Cultist: 0,
+        ChaosTokenType.Tablet: 0,
+        ChaosTokenType.ElderThing: 0,
+    }
 
-    # take 3 rounds
-    for i in range(0, 3):
+    Game._scenario.reference.effect = {
+        ChaosTokenType.Skull: lambda tokens: None,
+        ChaosTokenType.Cultist: lambda tokens: None,
+        ChaosTokenType.Tablet: lambda tokens: None,
+        ChaosTokenType.ElderThing: lambda tokens: None,
+    }
+
+    # .reference take 3 rounds
+    for i in range(0, 5):
         Game._round = Round(i + 1)
         Game._round()
         ...

@@ -296,19 +296,23 @@ class AlreadyGetOutOfPlayEvent(Event):
 
 
 class WouldRevealChaosTokenEvent(Event):
+    investigator: Investigator
     amount: int
 
-    def __init__(self, name: str, amount: int):
+    def __init__(self, name: str, investigator: Investigator, amount: int):
         super().__init__(name, EventType.WouldRevealChaosToken)
         self.amount = amount
+        self.investigator = investigator
 
 
 class AlreadyRevealChaosTokenEvent(Event):
+    investigator: Investigator
     token: list[ChaosToken]
 
-    def __init__(self, name: str, token: list[ChaosToken]):
+    def __init__(self, name: str, investigator: Investigator, token: list[ChaosToken]):
         super().__init__(name, EventType.AlreadyRevealChaosToken)
         self.token = token
+        self.investigator = investigator
 
 
 class CalcModifierEvent(Event):
