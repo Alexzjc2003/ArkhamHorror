@@ -34,6 +34,7 @@ class Investigator(Damageable, Entity):
 
     def __init__(self, name: str, card: InvestigatorCard):
         Damageable.__init__(self, card.token, card.health, card.sanity)
+        Entity.__init__(self, "Investigator")
         self.name = name
         self.card = card
 

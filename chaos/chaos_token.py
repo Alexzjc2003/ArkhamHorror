@@ -8,6 +8,7 @@ from game import Game
 
 if TYPE_CHECKING:
     from scenario import ScenarioRef
+    from skill_test import SkillTest
 
 
 class ChaosTokenType(Enum):
@@ -26,12 +27,11 @@ class ChaosToken(ABC):
     def __init__(self, type: ChaosTokenType):
         self.type = type
 
-    @property
     @abstractmethod
-    def modifier(self) -> int: ...
+    def modifier(self, skillTest:SkillTest | None) -> int: ...
 
     @abstractmethod
-    def resolve(self, tokens: list[ChaosToken]): ...
+    def resolve(self, skillTest:SkillTest): ...
 
     @abstractmethod
     def __eq__(self, value: object) -> bool: ...
@@ -47,11 +47,10 @@ class ChaosTokenNum(ChaosToken):
         super().__init__(ChaosTokenType.Number)
         self._value = value
 
-    @property
     def modifier(self) -> int:
         return self._value
 
-    def resolve(self, tokens: list[ChaosToken]): ...
+    def resolve(self, skillTest:SkillTest): ...
 
     def __eq__(self, value: object) -> bool:
         return (
@@ -62,7 +61,7 @@ class ChaosTokenNum(ChaosToken):
         )
 
     def __repr__(self) -> str:
-        s = f"{self.modifier}" if self.modifier < 0 else f"+{self.modifier}"
+        s = f"{self.modifier}" if self.modifier() < 0 else f"+{self.modifier()}"
         return f"ChaosTokenNum({s})"
 
     def __str__(self) -> str:
@@ -73,14 +72,13 @@ class ChaosTokenSym(ChaosToken):
     def __init__(self, type: ChaosTokenType):
         super().__init__(type)
 
-    @property
-    def modifier(self) -> int:
-        m = Game._scenario.reference.modifier[self.type]
-        return m if isinstance(m, int) else m()
+    def modifier(self, skillTest:SkillTest) -> int:
+        return Game._scenario.reference.modifier[self.type](skillTest)
+        
 
-    def resolve(self, tokens: list[ChaosToken]):
+    def resolve(self, skillTest:SkillTest):
         if 1 <= self.type.value <= 4:
-            return Game._scenario.reference.effect[self.type](tokens)
+            return Game._scenario.reference.effect[self.type](skillTest)
         else:
             raise NotImplementedError()
 
@@ -93,8 +91,7 @@ class ChaosTokenSym(ChaosToken):
         )
 
     def __repr__(self) -> str:
-        s = f"{self.modifier}" if self.modifier < 0 else f"+{self.modifier}"
-        return f"ChaosTokenSym[{self.type.name}]({s})"
+        return f"ChaosTokenSym[{self.type.name}]()"
 
     def __str__(self) -> str:
         return self.__repr__()

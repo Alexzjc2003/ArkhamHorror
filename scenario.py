@@ -3,17 +3,18 @@ from typing import TYPE_CHECKING, Callable
 
 
 if TYPE_CHECKING:
-    from chaos.chaos_token import ChaosToken, ChaosTokenType
+    from skill_test import SkillTest
+    from chaos.chaos_token import ChaosTokenType
 
 
 class ScenarioRef:
-    modifier: dict[ChaosTokenType, int | Callable[..., int]]
-    effect: dict[ChaosTokenType, Callable[[list[ChaosToken]], None]]
+    modifier: dict[ChaosTokenType, Callable[[SkillTest], int]]
+    effect: dict[ChaosTokenType, Callable[[SkillTest], None]]
 
     def __init__(
         self,
-        modifier: dict[ChaosTokenType, int | Callable[..., int]],
-        effect: dict[ChaosTokenType, Callable[[list[ChaosToken]], None]],
+        modifier: dict[ChaosTokenType, Callable[[SkillTest], int]],
+        effect: dict[ChaosTokenType, Callable[[SkillTest], None]],
     ):
         self.modifier = modifier
         self.effect = effect

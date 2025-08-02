@@ -9,6 +9,7 @@ from asset import AssetCard
 from card import *
 from enemy import Enemy
 from event.event import AlreadyDealDamageHorrorEvent
+from event.select_target import SelectTargetEvent
 from investigator import InvestigatorCard
 
 
@@ -46,6 +47,11 @@ class Roland_s_38Special(AssetCard, EventListener):
         self.traits = ["Item", "Weapon", "Firearm"]
 
     @Triggered()
-    # @
     def fight(self):
+        # selectTarget = SelectTargetEvent(f"fight with {self.name}", )
+        
+        
         return
+
+
+

@@ -75,3 +75,5 @@ class FightAction(PlayerAction):
 
     def __init__(self, investigator: Investigator, target: Enemy):
         super().__init__(ActionType.Fight)
+        self.investigator = investigator
+        self.target = target

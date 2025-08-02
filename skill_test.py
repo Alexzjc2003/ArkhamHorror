@@ -44,11 +44,8 @@ class SkillTest:
         # ST.4 apply chaos symbol effect(s)
         while len(tokens) > 0:
             t = tokens.pop(0)
-            self.modifier += t.modifier
-            t.resolve(
-                tokens
-            )  # that is, the list does not contain the token being resolved
-
+            self.modifier += t.modifier(self)
+            t.resolve(self)
         # ST.5 determine modified skill value (all modifiers: tokens,
         # card effects in play, cards committed...)
 

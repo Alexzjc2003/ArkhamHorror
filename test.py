@@ -98,19 +98,7 @@ if __name__ == "__main__":
     # 12. Set act deck
 
     # 13. Scenario reference
-    Game._scenario.reference.modifier = {
-        ChaosTokenType.Skull: 0,
-        ChaosTokenType.Cultist: 0,
-        ChaosTokenType.Tablet: 0,
-        ChaosTokenType.ElderThing: 0,
-    }
 
-    Game._scenario.reference.effect = {
-        ChaosTokenType.Skull: lambda tokens: None,
-        ChaosTokenType.Cultist: lambda tokens: None,
-        ChaosTokenType.Tablet: lambda tokens: None,
-        ChaosTokenType.ElderThing: lambda tokens: None,
-    }
 
     # .reference take 3 rounds
     for i in range(0, 5):

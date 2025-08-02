@@ -1,7 +1,9 @@
 from __future__ import annotations
-from typing import Literal
-
 from card import Token
+from typing import Literal, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from location import Location
 
 
 class InvalidDamageException(Exception):
@@ -53,6 +55,10 @@ class Damageable:
 
 class Entity:
     type: Literal["Investigator", "Enemy"]
+    location: Location | None
 
-    def __init__(self, type: Literal["Investigator", "Enemy"]):
+    def __init__(
+        self, type: Literal["Investigator", "Enemy"], location: Location | None = None
+    ):
         self.type = type
+        self.location = location
